@@ -7,8 +7,8 @@ import Recognize
 import Constant
 import Labeling
 
-PlateDetect.show = False
-CharacterSegment.show = False
+PlateDetect.show = True
+CharacterSegment.show = True
 
 def ReadAndResize(img_path):
     try:
@@ -34,7 +34,7 @@ def PlateRecognize(img, model):
         return None
 
 
-Constant.image_file = './Rasp_img/plate/Test1.jpg'
+Constant.image_file = 'Test1.jpg'
 
 #Load hình ảnh từ file lên
 #31,33 loi

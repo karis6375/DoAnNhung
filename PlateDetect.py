@@ -81,10 +81,25 @@ def Preprocess(img):
     #     cv2.imshow("Blur",img)  
 
 
-    img = cv2.equalizeHist(img)  
+    # img = cv2.equalizeHist(img)  
+    # if(show==True):
+    #     cv2.imshow("Equalize_histogram",img)
+    # #Cân bằng sáng hình ảnh  
+
+    kernel_TopHat = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7)) 
+    imgTopHat = cv2.morphologyEx(img, cv2.MORPH_TOPHAT, kernel_TopHat)
+    
+    kernel_BlackHat = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7)) 
+    imgBlackHat = cv2.morphologyEx(img, cv2.MORPH_BLACKHAT, kernel_BlackHat)
+    
+    img = cv2.add(img, imgTopHat)
     if(show==True):
-        cv2.imshow("Equalize_histogram",img)
-    #Cân bằng sáng hình ảnh  
+        cv2.imshow("Add_Top_Hat",img)
+
+    img = cv2.subtract(img, imgBlackHat)
+    if(show==True):
+        cv2.imshow("Sub_Black_Hat",img)  
+    #tăng độ tương phản cho các chi tiết nhỏ như ký tự trong biển số xe
 
     ret,img = cv2.threshold(img,120,255,cv2.THRESH_OTSU)
     if(show==True):
@@ -96,7 +111,7 @@ def Preprocess(img):
         cv2.imshow("Canny",img)
     #Tìm biên của hình ảnh bằng bộ lọc canny
         
-    kernel_dilate = np.ones((2,2), np.uint8)
+    kernel_dilate = np.ones((1,1), np.uint8)
     img = cv2.dilate(img, kernel_dilate,iterations=1) 
     img_binary = img
     if(show==True):
